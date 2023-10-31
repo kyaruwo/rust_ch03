@@ -28,6 +28,8 @@ fn main() {
     }
 }
 
+// <------------------------------------------> //
+
 fn convert_temperature() {
     const CHOICES: [&str; 3] = [
         "1 - Celsius to Fahrenheit",
