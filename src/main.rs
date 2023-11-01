@@ -3,7 +3,7 @@ use std::io;
 use std::time::{Duration, Instant};
 
 fn main() {
-    os("cls");
+    clear();
 
     const CHOICES: [&str; 4] = [
         "1 - Convert Temperature",
@@ -12,7 +12,7 @@ fn main() {
         "4 - exit",
     ];
     'main: loop {
-        os("cls");
+        clear();
 
         println!("Chapter 03: Practice\n");
 
@@ -39,7 +39,7 @@ fn convert_temperature() {
         "4 - return",
     ];
     loop {
-        os("cls");
+        clear();
         println!("Convert Temperature\n");
 
         for choice in CHOICES {
@@ -52,7 +52,7 @@ fn convert_temperature() {
             4 => break,
             _ => continue,
         }
-        os("pause");
+        pause();
     }
 
     fn celsius_fahrenheit() {
@@ -91,7 +91,7 @@ fn nth_fibonacci() {
     const CHOICES: [&str; 2] = ["1 - calculate fibonacci.", "4 - return"];
 
     loop {
-        os("cls");
+        clear();
         println!("nth Fibonacci\n");
 
         for choice in CHOICES {
@@ -103,7 +103,7 @@ fn nth_fibonacci() {
             4 => break,
             _ => continue,
         }
-        os("pause");
+        pause();
     }
 
     fn calculate_fibonacci(map: &mut HashMap<u128, u128>) {
@@ -128,7 +128,7 @@ fn nth_fibonacci() {
             Ok(nth) => nth,
             Err(_) => {
                 println!("Not a Number.");
-                return os("pause");
+                return pause();
             }
         };
 
@@ -148,10 +148,20 @@ fn nth_fibonacci() {
 
 fn twelve_days_of_xmas() {
     println!("Twelve Days of XMas\n");
-    os("pause");
+    pause();
 }
 
 // <------------------------------------------> //
+
+fn clear() {
+    //! clear the terminal
+    os("cls");
+}
+
+fn pause() {
+    //! pause the terminal
+    os("pause");
+}
 
 fn os(command: &str) {
     //! Execute a Terminal command
