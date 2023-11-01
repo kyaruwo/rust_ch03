@@ -13,7 +13,6 @@ fn main() {
     ];
     'main: loop {
         clear();
-
         println!("Chapter 03: Practice\n");
 
         for choice in CHOICES {
