@@ -138,6 +138,37 @@ fn nth_fibonacci() {
 }
 
 fn twelve_days_of_xmas() {
+    const DAYS: [(&str, &str, &str); 12] = [
+        ("first", "", "A partridge in a pear tree."),
+        ("second", "Two", " turtle doves, and"),
+        ("third", "Three", " French hens,"),
+        ("fourth", "Four", " calling birds,"),
+        ("fifth", "Five", " gold rings,"),
+        ("sixth", "Six", " geese a-laying,"),
+        ("seventh", "Seven", " swans a-swimming,"),
+        ("eighth", "Eight", " maids a-milking,"),
+        ("ninth", "Nine", " ladies dancing,"),
+        ("tenth", "Ten", " lords a-leaping,"),
+        ("eleventh", "Eleven", " pipers piping,"),
+        ("twelfth", "Twelve", " drummers drumming,"),
+    ];
+    fn play() {
+        let mut day: usize = 0;
+        while day < DAYS.len() {
+            clear();
+            println!("On the {} day of XMas,", DAYS[day].0);
+            println!("My true love sent to me");
+
+            let mut rev: usize = day + 1;
+            while rev > 0 {
+                rev -= 1;
+                println!("{}{}", DAYS[rev].1, DAYS[rev].2);
+            }
+            day += 1;
+            pause();
+        }
+    }
+
     const CHOICES: [&str; 2] = ["1 - play.", "4 - return"];
     loop {
         clear();
@@ -148,11 +179,10 @@ fn twelve_days_of_xmas() {
         }
 
         match get_choice() {
-            1 => (),
+            1 => play(),
             4 => break,
             _ => continue,
         }
-        pause();
     }
 }
 
