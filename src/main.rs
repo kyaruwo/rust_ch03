@@ -133,7 +133,7 @@ fn nth_fibonacci() {
         };
 
         if nth > 186 {
-            return println!("186 is my limit uwu.\n");
+            return println!("186 fibonacci is my limit uwu.\n");
         }
 
         let time: Instant = Instant::now();
