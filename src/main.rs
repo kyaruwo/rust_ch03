@@ -1,4 +1,6 @@
+use std::collections::HashMap;
 use std::io;
+use std::time::{Duration, Instant};
 
 fn main() {
     os("cls");
@@ -20,7 +22,7 @@ fn main() {
 
         match get_choice() {
             1 => convert_temperature(),
-            2 => generate_fibonacci(),
+            2 => nth_fibonacci(),
             3 => twelve_days_of_xmas(),
             4 => break 'main,
             _ => continue,
@@ -81,9 +83,67 @@ fn convert_temperature() {
     }
 }
 
-fn generate_fibonacci() {
-    println!("Generate Fibonacci\n");
-    os("pause");
+fn nth_fibonacci() {
+    let mut fibonacci_map: HashMap<u128, u128> = HashMap::new();
+    fibonacci_map.insert(0, 0);
+    fibonacci_map.insert(1, 1);
+
+    const CHOICES: [&str; 2] = ["1 - calculate fibonacci.", "4 - return"];
+
+    loop {
+        os("cls");
+        println!("nth Fibonacci\n");
+
+        for choice in CHOICES {
+            println!("{choice}");
+        }
+
+        match get_choice() {
+            1 => calculate_fibonacci(&mut fibonacci_map),
+            4 => break,
+            _ => continue,
+        }
+        os("pause");
+    }
+
+    fn calculate_fibonacci(map: &mut HashMap<u128, u128>) {
+        fn fibonacci(n: u128, map: &mut HashMap<u128, u128>) -> u128 {
+            let v: u128 = match map.get(&n) {
+                Some(&v) => v,
+                None => {
+                    let v: u128 = fibonacci(n - 1, map) + fibonacci(n - 2, map);
+                    map.insert(n, v);
+                    v
+                }
+            };
+            v
+        }
+
+        println!("\nEnter a Number.");
+        let mut nth: String = String::new();
+        io::stdin()
+            .read_line(&mut nth)
+            .expect("Failed to read line");
+        let nth: u128 = match nth.trim().parse() {
+            Ok(nth) => nth,
+            Err(_) => {
+                println!("Not a Number.");
+                return os("pause");
+            }
+        };
+
+        if nth > 186 {
+            return println!("186 is my limit uwu.\n");
+        }
+
+        let time: Instant = Instant::now();
+        let v: u128 = fibonacci(nth, map);
+        let time: Duration = time.elapsed();
+
+        println!("{nth} fibonacci is {v}\n");
+
+        println!("time taken: {:?}", time);
+    }
 }
 
 fn twelve_days_of_xmas() {
