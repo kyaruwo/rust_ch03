@@ -92,6 +92,7 @@ fn nth_fibonacci() {
         };
         let v: u128 = fibonacci(n - 1, map) + fibonacci(n - 2, map);
         map.insert(n, v);
+
         v
     }
 
