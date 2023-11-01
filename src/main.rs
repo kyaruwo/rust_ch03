@@ -63,7 +63,7 @@ fn convert_temperature() {
             .expect("Failed to read line");
         let celsius: f64 = match celsius.trim().parse() {
             Ok(celsius) => celsius,
-            Err(_) => return,
+            Err(_) => return println!("Invalid Input.\n"),
         };
         let fahrenheit: f64 = (celsius * 1.8) + 32.0;
         println!("{celsius} celsius is equal to {fahrenheit} fahrenheit\n");
@@ -76,7 +76,7 @@ fn convert_temperature() {
             .expect("Failed to read line");
         let fahrenheit: f64 = match fahrenheit.trim().parse() {
             Ok(fahrenheit) => fahrenheit,
-            Err(_) => return,
+            Err(_) => return println!("Invalid Input.\n"),
         };
         let celsius: f64 = (fahrenheit - 32.0) / 1.8;
         println!("{fahrenheit} fahrenheit is equal to {celsius} celsius\n");
@@ -84,12 +84,18 @@ fn convert_temperature() {
 }
 
 fn nth_fibonacci() {
-    let mut fibonacci_map: HashMap<u128, u128> = HashMap::new();
-    fibonacci_map.insert(0, 0);
-    fibonacci_map.insert(1, 1);
+    let mut fibonacci_map: HashMap<u128, u128> = HashMap::from([(0, 0), (1, 1)]);
+    fn fibonacci(n: u128, map: &mut HashMap<u128, u128>) -> u128 {
+        match map.get(&n) {
+            Some(&v) => return v,
+            None => (),
+        };
+        let v: u128 = fibonacci(n - 1, map) + fibonacci(n - 2, map);
+        map.insert(n, v);
+        v
+    }
 
-    const CHOICES: [&str; 2] = ["1 - calculate fibonacci.", "4 - return"];
-
+    const CHOICES: [&str; 2] = ["1 - find fibonacci.", "4 - return"];
     loop {
         clear();
         println!("nth Fibonacci\n");
@@ -99,26 +105,14 @@ fn nth_fibonacci() {
         }
 
         match get_choice() {
-            1 => calculate_fibonacci(&mut fibonacci_map),
+            1 => find_fibonacci(&mut fibonacci_map),
             4 => break,
             _ => continue,
         }
         pause();
     }
 
-    fn calculate_fibonacci(map: &mut HashMap<u128, u128>) {
-        fn fibonacci(n: u128, map: &mut HashMap<u128, u128>) -> u128 {
-            let v: u128 = match map.get(&n) {
-                Some(&v) => v,
-                None => {
-                    let v: u128 = fibonacci(n - 1, map) + fibonacci(n - 2, map);
-                    map.insert(n, v);
-                    v
-                }
-            };
-            v
-        }
-
+    fn find_fibonacci(map: &mut HashMap<u128, u128>) {
         println!("\nEnter a Number.");
         let mut nth: String = String::new();
         io::stdin()
@@ -126,14 +120,11 @@ fn nth_fibonacci() {
             .expect("Failed to read line");
         let nth: u128 = match nth.trim().parse() {
             Ok(nth) => nth,
-            Err(_) => {
-                println!("Not a Number.");
-                return pause();
-            }
+            Err(_) => return println!("Invalid Input.\n"),
         };
 
         if nth > 186 {
-            return println!("186 fibonacci is my limit uwu.\n");
+            return println!("186 is the limit.\n");
         }
 
         let time: Instant = Instant::now();
@@ -147,8 +138,22 @@ fn nth_fibonacci() {
 }
 
 fn twelve_days_of_xmas() {
-    println!("Twelve Days of XMas\n");
-    pause();
+    const CHOICES: [&str; 2] = ["1 - play.", "4 - return"];
+    loop {
+        clear();
+        println!("Twelve Days of XMas\n");
+
+        for choice in CHOICES {
+            println!("{choice}");
+        }
+
+        match get_choice() {
+            1 => (),
+            4 => break,
+            _ => continue,
+        }
+        pause();
+    }
 }
 
 // <------------------------------------------> //
