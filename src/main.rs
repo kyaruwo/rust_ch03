@@ -8,7 +8,7 @@ fn main() {
 
     const CHOICES: [&str; 4] = [
         "1 - Convert Temperature",
-        "2 - Generate Fibonacci",
+        "2 - nth Fibonacci",
         "3 - Twelve Days of XMas",
         "4 - exit",
     ];
