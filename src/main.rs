@@ -25,7 +25,14 @@ fn main() {
             Ok(2) => nth_fibonacci(),
             Ok(3) => twelve_days_of_xmas(),
             Ok(4) => break 'main,
-            _ => continue,
+            Err(e) => {
+                println!("{e}");
+                pause();
+            }
+            _ => {
+                println!("invalid choice");
+                pause();
+            }
         }
     }
 }
@@ -50,7 +57,8 @@ fn convert_temperature() {
             Ok(1) => celsius_fahrenheit(),
             Ok(2) => fahrenheit_celsius(),
             Ok(4) => break,
-            _ => continue,
+            Err(e) => println!("{e}"),
+            _ => println!("invalid choice"),
         }
         pause();
     }
@@ -63,7 +71,7 @@ fn convert_temperature() {
             .expect("Failed to read line");
         let celsius: f64 = match celsius.trim().parse() {
             Ok(celsius) => celsius,
-            Err(_) => return println!("Invalid Input.\n"),
+            Err(e) => return println!("{e}"),
         };
         let fahrenheit: f64 = (celsius * 1.8) + 32.0;
         println!("{celsius} celsius is equal to {fahrenheit} fahrenheit\n");
@@ -76,7 +84,7 @@ fn convert_temperature() {
             .expect("Failed to read line");
         let fahrenheit: f64 = match fahrenheit.trim().parse() {
             Ok(fahrenheit) => fahrenheit,
-            Err(_) => return println!("Invalid Input.\n"),
+            Err(e) => return println!("{e}"),
         };
         let celsius: f64 = (fahrenheit - 32.0) / 1.8;
         println!("{fahrenheit} fahrenheit is equal to {celsius} celsius\n");
@@ -108,7 +116,8 @@ fn nth_fibonacci() {
         match get_choice() {
             Ok(1) => find_fibonacci(&mut fibonacci_map),
             Ok(4) => break,
-            _ => continue,
+            Err(e) => println!("{e}"),
+            _ => println!("invalid choice"),
         }
         pause();
     }
@@ -121,7 +130,7 @@ fn nth_fibonacci() {
             .expect("Failed to read line");
         let nth: u128 = match nth.trim().parse() {
             Ok(nth) => nth,
-            Err(_) => return println!("Invalid Input.\n"),
+            Err(e) => return println!("{e}"),
         };
 
         if nth > 186 {
@@ -180,10 +189,15 @@ fn twelve_days_of_xmas() {
         }
 
         match get_choice() {
-            Ok(1) => play(),
+            Ok(1) => {
+                play();
+                continue;
+            }
             Ok(4) => break,
-            _ => continue,
+            Err(e) => println!("{e}"),
+            _ => println!("invalid choice"),
         }
+        pause();
     }
 }
 
@@ -214,10 +228,8 @@ fn get_choice() -> Result<u8, ParseIntError> {
     io::stdin()
         .read_line(&mut choice)
         .expect("Failed to read line");
-    let choice: Result<u8, ParseIntError> = match choice.trim().parse() {
-        Ok(choice) => Ok(choice),
-        Err(e) => Err(e),
+    match choice.trim().parse() {
+        Ok(choice) => return Ok(choice),
+        Err(e) => return Err(e),
     };
-
-    choice
 }
