@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::io;
+use std::num::ParseIntError;
 use std::time::{Duration, Instant};
 
 fn main() {
@@ -20,10 +21,10 @@ fn main() {
         }
 
         match get_choice() {
-            1 => convert_temperature(),
-            2 => nth_fibonacci(),
-            3 => twelve_days_of_xmas(),
-            4 => break 'main,
+            Ok(1) => convert_temperature(),
+            Ok(2) => nth_fibonacci(),
+            Ok(3) => twelve_days_of_xmas(),
+            Ok(4) => break 'main,
             _ => continue,
         }
     }
@@ -46,9 +47,9 @@ fn convert_temperature() {
         }
 
         match get_choice() {
-            1 => celsius_fahrenheit(),
-            2 => fahrenheit_celsius(),
-            4 => break,
+            Ok(1) => celsius_fahrenheit(),
+            Ok(2) => fahrenheit_celsius(),
+            Ok(4) => break,
             _ => continue,
         }
         pause();
@@ -105,8 +106,8 @@ fn nth_fibonacci() {
         }
 
         match get_choice() {
-            1 => find_fibonacci(&mut fibonacci_map),
-            4 => break,
+            Ok(1) => find_fibonacci(&mut fibonacci_map),
+            Ok(4) => break,
             _ => continue,
         }
         pause();
@@ -124,7 +125,7 @@ fn nth_fibonacci() {
         };
 
         if nth > 186 {
-            return println!("186 is the limit.\n");
+            return println!("186 is my limit >_<\n");
         }
 
         let time: Instant = Instant::now();
@@ -179,8 +180,8 @@ fn twelve_days_of_xmas() {
         }
 
         match get_choice() {
-            1 => play(),
-            4 => break,
+            Ok(1) => play(),
+            Ok(4) => break,
             _ => continue,
         }
     }
@@ -206,16 +207,16 @@ fn os(command: &str) {
         .expect("Failed to execute {command}");
 }
 
-fn get_choice() -> u8 {
-    //! Returns choice: u8 else if Err() Returns 0
+fn get_choice() -> Result<u8, ParseIntError> {
+    //! Returns Ok(u8) else Err(e)
     println!("\n? - Enter choice.");
     let mut choice: String = String::new();
     io::stdin()
         .read_line(&mut choice)
         .expect("Failed to read line");
-    let choice: u8 = match choice.trim().parse() {
-        Ok(choice) => choice,
-        Err(_) => 0,
+    let choice: Result<u8, ParseIntError> = match choice.trim().parse() {
+        Ok(choice) => Ok(choice),
+        Err(e) => Err(e),
     };
 
     choice
